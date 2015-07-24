@@ -17,9 +17,19 @@ export class Expect extends PureComponent {
                     <br/>
                     const nextState = {stateNextId};
                     <br/>
-                    const computedNextState = reducer(curState, action);
-                    <br/>
-                    expect(computedNextState).to.deep.equal(nextState);
+                    const unsubscribe = store.subscribe(()=>{
+                    <br/>    
+                        const computedNextState = store.getState();
+                    <br/>    
+                    	expect(computedNextState).to.deep.equal(nextState);
+                    <br/>                    	
+                    	unsubscribe();
+                    <br/>                    	
+                    	done();
+                    <br/>                    	
+                    });
+                    <br/>                    
+                    store.dispatch(action);
                 <br/>
             </span>
         );
@@ -32,7 +42,7 @@ export class It extends PureComponent {
         return (
             <span>
 
-                    it('{computedStateNextId}', () =><Begin/>
+                    it('{computedStateNextId}', (done) =><Begin/>
                 <br/>
                 <Expect {...this.props}/>
                 <End/>);
@@ -62,12 +72,14 @@ export class Describe extends PureComponent {
             <span>
                    import chai from "chai";
                 <br/>
-                   import <Begin/> combineReducers <End/> from 'redux';
+                   import <Begin/> combineReducers, createStore <End/> from 'redux';
                 <br/>
                    import * as reducers from '../reducers';
                 <br/>
                 <br/>
                    const reducer = combineReducers(reducers);
+                <br/>
+                   const store = createStore(reducer);
                 <br/>
                    const expect = chai.expect;
                 <br/>
