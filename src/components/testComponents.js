@@ -17,7 +17,7 @@ export class Expect extends PureComponent {
                     <br/>
                     const nextState = {stateNextId};
                     <br/>
-                    const unsubscribe = store.subscribe(()=>{
+                    const unsubscribe = store.subscribe(()=><Begin/>
                     <br/>    
                         const computedNextState = store.getState();
                     <br/>    
@@ -27,7 +27,7 @@ export class Expect extends PureComponent {
                     <br/>                    	
                     	done();
                     <br/>                    	
-                    });
+                    <End/>);
                     <br/>                    
                     store.dispatch(action);
                 <br/>
