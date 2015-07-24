@@ -28,8 +28,25 @@ export class Expect extends PureComponent {
                     	done();
                     <br/>                    	
                     <End/>);
-                    <br/>                    
-                    store.dispatch(action);
+                    <br/>
+                    if(action.name)<Begin/>
+                    <br/>
+                        let parts = action.name.split('.');
+                        <br/>
+                        if(parts.length === 2 && actions[parts[0]] && actions[parts[0]][parts[1]] 
+                            && typeof actions[parts[0]][parts[1]] === 'function')<Begin/>
+                            <br/>
+                            actions[parts[0]][parts[1]](...JSON.parse(action.params));
+                            <br/>
+                        <Begin/> else <Begin/>
+                            <br/>
+                            store.dispatch(action);
+                            <br/>
+                        <End/>
+                        <br/>
+                    <End/>
+                    
+                    
                 <br/>
             </span>
         );
@@ -76,6 +93,8 @@ export class Describe extends PureComponent {
                 <br/>
                    import * as reducers from '../reducers';
                 <br/>
+                    import * as actions from '../actions';
+                <br/>    
                 <br/>
                    const reducer = combineReducers(reducers);
                 <br/>
