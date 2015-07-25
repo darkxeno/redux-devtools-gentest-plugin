@@ -36,9 +36,15 @@ export class Expect extends PureComponent {
                         if(parts.length === 2 && actions[parts[0]] && actions[parts[0]][parts[1]] 
                             && typeof actions[parts[0]][parts[1]] === 'function')<Begin/>
                             <br/>
-                            actions[parts[0]][parts[1]](...JSON.parse(action.params));
+                            if(action.params && typeof action.params === 'string')<Begin/>
                             <br/>
-                        <Begin/> else <Begin/>
+                                actions[parts[0]][parts[1]](...JSON.parse(action.params));
+                            <End/> else <Begin/>
+                            <br/>
+                                actions[parts[0]][parts[1]]();
+                            <End/>
+                            <br/>
+                        <End/> else <Begin/>
                             <br/>
                             store.dispatch(action);
                             <br/>
