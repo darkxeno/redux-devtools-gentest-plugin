@@ -4,7 +4,8 @@
   "description": "Counter example for redux",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "babel tests --out-dir dist;webpack dist/tests.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,28 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link href="/tests/mocha.css" rel="stylesheet" />
+  <script>
+    window.__TEST_MODE=true;
+  </script>  
+</head>
+<body>
+  <div id="root"></div>
+  <div id="mocha"></div>
+
+  <!--<script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>-->
+  <!--<script src="/static/bundle.js"></script>-->
+  <script src="/tests/mocha.js"></script>
+
+  <script>mocha.setup('bdd')</script>
+  <script src="/dist/bundle.js"></script>
+  <script>
+    //mocha.checkLeaks();
+    //mocha.globals(['jQuery']);
+    mocha.setup({ui: 'bdd', ignoreLeaks: true, timeout: 5000 });    
+    mocha.run();
+  </script>  
+</body>
+</html>
