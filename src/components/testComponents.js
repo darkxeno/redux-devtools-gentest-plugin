@@ -17,19 +17,25 @@ export class Expect extends PureComponent {
                     <br/>
                     const nextState = {stateNextId};
                     <br/>
+                    store.dispatch(action);
+                    <br/>
                     const unsubscribe = store.subscribe(()=><Begin/>
-                    <br/>    
-                        const computedNextState = store.getState();
-                    <br/>    
-                    	expect(computedNextState).to.deep.equal(nextState);
-                    <br/>                    	
+                    <br/>                   	
                     	unsubscribe();
                     <br/>                    	
                     	done();
                     <br/>                    	
                     <End/>);
                     <br/>
-                    store.dispatch(action);
+                    if( simulateRealTime && action.offsetMillis )<Begin/>
+                    <br/>    
+                        setTimeout( ()=>testStore.dispatch(action), action.offsetMillis);
+                    <br/>    
+                    <End/> else <Begin/>
+                    <br/>
+                        testStore.dispatch(action);
+                    <br/>   
+                    <End/>
                     <br/>
                 <br/>
             </span>
@@ -62,32 +68,44 @@ export class Describe extends PureComponent {
         this.props.onNewText(res);
     }
 
-
     render() {
 
-        const its = R.filter((item)=>item && item.record).map((item)=> <span><It {...item}/><br/><br/></span>)(this.props.items);
+        const its = R.map((item)=> <span><It {...item}/><br/><br/></span>,R.filter((item)=>item && item.action && item.action.record)(this.props.items));
         return (
-
-
 
             <span>
                    import chai from "chai";
                 <br/>
                    import <Begin/> combineReducers, createStore <End/> from 'redux';
                 <br/>
-                   import * as reducers from '../reducers';
+                   import <Begin/> Reducers <End/> from 'redux-devtools-gentest-plugin';
                 <br/>
-                    import * as actions from '../actions';
+                    //change next line to import your redux combined reducer and your composed store
+                <br/>
+                    import <Begin/> reducer, store <End/> from '../redux-setup';
+                <br/>
+                    //change next line to import your react root component
+                <br/>
+                    import rootComponent from '../index';                    
                 <br/>    
                 <br/>
-                   const reducer = combineReducers(reducers);
+                   chai.config.truncateThreshold = 0;
+                <br/>                   
+                   const simulateRealTime = false;
                 <br/>
-                   const store = createStore(reducer);
+                   let expect = chai.expect;
                 <br/>
-                   const expect = chai.expect;
+                   let playEvents = Reducers.playEvents.create(rootComponent);
                 <br/>
+                   let testReducer = combineReducers(<Begin/> playEvents <End/>);
                 <br/>
-                         describe('handleActions', () => <Begin/>
+                   let testStore = createStore(testReducer);
+                <br/>                
+                <br/>
+                         describe('run recorded UI tests', function()<Begin/>
+                     <br/>
+                     <br/>
+                     this.timeout(60000);
                      <br/>
                     <br/>
                 {its}

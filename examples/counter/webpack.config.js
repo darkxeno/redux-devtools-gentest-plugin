@@ -15,10 +15,13 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.IgnorePlugin(/jsdom$/)
   ],
   resolve: {
     alias: {
+      'redux-devtools/lib': path.join(__dirname, '..', '..', 'src'),
+      'redux-devtools': path.join(__dirname, '..', '..', 'src'),
       'react': path.join(__dirname, 'node_modules', 'react')
     },
     extensions: ['', '.js']

@@ -3,13 +3,19 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Counter from '../components/Counter';
 import * as CounterActions from '../actions/CounterActions';
+import * as TestActions from '../actions/TestActions';
+
 
 @connect(state => ({
   counter: state.counter
 }))
 export default class CounterApp extends Component {
   render() {
-    const { counter, dispatch } = this.props;
+  	const { counter, dispatch } = this.props;
+  	if(!window.TestActions){
+  		window.TestActions = {...bindActionCreators(TestActions, dispatch)};
+  	}
+    
     return (
       <Counter counter={counter}
                {...bindActionCreators(CounterActions, dispatch)} />
