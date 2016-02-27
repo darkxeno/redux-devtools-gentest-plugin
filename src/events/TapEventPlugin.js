@@ -18,7 +18,7 @@
  */
 
 "use strict";
-
+var TestActions = require('../actions/TestActions');
 var EventConstants = require('react/lib/EventConstants');
 var EventPluginUtils = require('react/lib/EventPluginUtils');
 var EventPropagators = require('react/lib/EventPropagators');
@@ -132,9 +132,9 @@ var TapEventPlugin = {
 
     console.log('arguments',arguments);
 
-    if(window.TestActions){
+    if(TestActions){
       if(nativeEvent && nativeEvent.type === 'click'){
-        window.TestActions.click(topLevelTargetID,topLevelTarget.tagName);
+        TestActions.click(topLevelTargetID,topLevelTarget.tagName);
       }
     }
 

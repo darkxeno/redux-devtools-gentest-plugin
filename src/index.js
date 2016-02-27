@@ -4,4 +4,3 @@ import Reducers from './reducers/index';
 export { Reducers };
 import injectTapEventPlugin from './events/injectTapEventPlugin';
 export { injectTapEventPlugin };
-
