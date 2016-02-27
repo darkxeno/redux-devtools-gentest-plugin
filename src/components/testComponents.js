@@ -29,35 +29,8 @@ export class Expect extends PureComponent {
                     <br/>                    	
                     <End/>);
                     <br/>
-                    if(action.name)<Begin/>
-                    <br/>
-                        let parts = action.name.split('.');
-                        <br/>
-                        if(parts.length === 2 && actions[parts[0]] && actions[parts[0]][parts[1]] 
-                            && typeof actions[parts[0]][parts[1]] === 'function')<Begin/>
-                            <br/>
-                            if(action.params && typeof action.params === 'string')<Begin/>
-                            <br/>
-                                store.dispatch(actions[parts[0]][parts[1]](...JSON.parse(action.params)));
-                            <br/>                                
-                            <End/> else <Begin/>
-                            <br/>
-                                store.dispatch(actions[parts[0]][parts[1]]());
-                            <br/>    
-                            <End/>
-                            <br/>
-                        <End/> else <Begin/>
-                            <br/>
-                            store.dispatch(action);
-                            <br/>
-                        <End/>
-                        <br/>
-                    <End/> else <Begin/>
-                    <br/>
                     store.dispatch(action);
                     <br/>
-                    <End/>
-                    
                 <br/>
             </span>
         );
@@ -92,7 +65,7 @@ export class Describe extends PureComponent {
 
     render() {
 
-        const its = R.map((item)=> <span><It {...item}/><br/><br/></span>)(this.props.items);
+        const its = R.filter((item)=>item && item.record).map((item)=> <span><It {...item}/><br/><br/></span>)(this.props.items);
         return (
 
 
