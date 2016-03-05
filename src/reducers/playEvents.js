@@ -1,7 +1,11 @@
+const React = require('react/addons');
+const TestUtils = React.addons.TestUtils;
+
+let rootComponent;
 
 function getTargetReactComponent(action) {
 
-	const components = TestUtils.scryRenderedDOMComponentsWithTag(rootReactComponent, action.tagName);
+	const components = TestUtils.scryRenderedDOMComponentsWithTag(rootComponent, action.tagName);
 	//const reactId = action.reactId.replace(/^\.[0-Z]*\.(.*)$/, mainId+'.$1');
 	const { reactId, targetId } = action;
 
@@ -33,15 +37,19 @@ function getTargetReactComponent(action) {
 
 export default function create(rootReactComponent){
 
-  return function playEvents(state={ clicks:0, others:0, events:[] }, action) {
-  	console.log('playing event recorded:',action);
-
-  	let React = require('react/addons');
-	  let TestUtils = React.addons.TestUtils;  
-
-	  if(!rootReactComponent || !TestUtils.isCompositeComponent(rootReactComponent)){
+	if(!rootReactComponent || !TestUtils.isCompositeComponent(rootReactComponent)){
 			throw new Error('Invalid react root component specified');
-	  }
+	}	
+
+	rootComponent = rootReactComponent;
+
+  return function playEvents(state={ clicks:0, changes:0, others:0, events:[] }, action) {
+
+  	if(!action.tagName){
+  		return state;
+  	}
+
+  	console.log('playing event recorded:',action);  
 
 	  const component = getTargetReactComponent(action);
 
@@ -50,9 +58,6 @@ export default function create(rootReactComponent){
 	  }
 
 	  switch (action.type) {
-		  case '@@INIT':
-		  	
-		  	break;
 		  case 'topClick':
 
 				TestUtils.Simulate.click(component);
@@ -60,10 +65,11 @@ export default function create(rootReactComponent){
 				state = { ...state, clicks:state.clicks+1 };
 			break;
 		  case 'topChange':
-		  	component.value = action.value;
-				TestUtils.Simulate.change(component);
+		  	const node = component.getDOMNode();
+		  	node.value = action.value;
+				TestUtils.Simulate.change(node);
 				state.events.push( { type: action.type, component:action} );
-				state = { ...state, clicks:state.clicks+1 };
+				state = { ...state, changes:state.changes+1 };
 			break;			
 		}
 		

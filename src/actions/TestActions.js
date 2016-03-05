@@ -2,6 +2,11 @@ let lastTimestamp = Date.now();
 
 export function event(topLevelType, topLevelTarget, reactId, nativeEvent) {
 
+  if(topLevelTarget === window){
+  	console.log('window event');
+  	return false;
+  }	
+
   const offsetMillis = Date.now() - lastTimestamp;
   lastTimestamp = Date.now();
 
@@ -22,6 +27,8 @@ export function event(topLevelType, topLevelTarget, reactId, nativeEvent) {
       reactId,
       targetId,
       tagName: topLevelTarget.tagName,
+      previousValue: topLevelTarget.getAttribute('value'),
+      value: nativeEvent.target.value,
       offsetMillis
     }; 
     break;        

@@ -133,7 +133,8 @@ var TapEventPlugin = {
     console.log('arguments',arguments);
 
     if(window.TestActions){
-      if(nativeEvent && nativeEvent.type === 'click'){
+      if(['topClick','topChange'].indexOf(topLevelType)!==-1){
+      //if(nativeEvent && (nativeEvent.type === 'click' || nativeEvent.type === 'change')){
         window.TestActions.event(
           topLevelType,
           topLevelTarget,

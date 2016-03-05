@@ -16,7 +16,7 @@ export default function recordEvents(state={ clicks:0, changes: 0, others:0, eve
 			break;
 	  case 'topChange':
 			console.log('recording event received:',action);
-			state = { ...state, changes:state.change+1, events: [...state.events,{ type: action.type, component:action }] };
+			state = { ...state, changes:state.changes+1, events: [...state.events,{ type: action.type, component:action }] };
 			break;			
 	  /*default:
 	  	const event = { type: action.type, offsetMillis: Date.now()-initTimestamp }

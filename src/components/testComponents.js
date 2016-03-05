@@ -17,25 +17,15 @@ export class Expect extends PureComponent {
                     <br/>
                     const nextState = {stateNextId};
                     <br/>
+                    expect(store.getState()).to.deep.equal(curState);
+                    <br/>
                     store.dispatch(action);
                     <br/>
-                    const unsubscribe = store.subscribe(()=><Begin/>
+                    expect(store.getState()).to.deep.equal(nextState);
                     <br/>                   	
-                    	unsubscribe();
+                    waitForStoreChanges(done);
                     <br/>                    	
-                    	done();
-                    <br/>                    	
-                    <End/>);
-                    <br/>
-                    if( simulateRealTime && action.offsetMillis )<Begin/>
-                    <br/>    
-                        setTimeout( ()=>testStore.dispatch(action), action.offsetMillis);
-                    <br/>    
-                    <End/> else <Begin/>
-                    <br/>
-                        testStore.dispatch(action);
-                    <br/>   
-                    <End/>
+                    dispatchTestAction(action);
                     <br/>
                 <br/>
             </span>
@@ -100,7 +90,43 @@ export class Describe extends PureComponent {
                    let testReducer = combineReducers(<Begin/> playEvents <End/>);
                 <br/>
                    let testStore = createStore(testReducer);
-                <br/>                
+                <br/>
+                    const waitForStoreChanges = function(done)<Begin/>
+                    <br/>    
+                        const timeout = setTimeout(function()<Begin/>
+                    <br/>        
+                            unsubscribe();
+                    <br/>        
+                            done();     
+                    <br/>        
+                        <End/>,5000);    
+                    <br/>    
+                        const unsubscribe = store.subscribe(()=><Begin/>
+                    <br/>        
+                            clearTimeout(timeout);
+                    <br/>        
+                            unsubscribe();
+                    <br/>        
+                            done();
+                    <br/>        
+                        <End/>); 
+                    <br/>    
+                    }
+                    <br/>
+                    const dispatchTestAction = function(action)<Begin/>
+                    <br/>    
+                        if( simulateRealTime && action.offsetMillis )<Begin/>
+                    <br/>        
+                            setTimeout( ()=>testStore.dispatch(action), action.offsetMillis);
+                    <br/>        
+                        <End/> else <Begin/>
+                    <br/>        
+                            testStore.dispatch(action);
+                    <br/>        
+                        <End/>
+                    <br/>       
+                    <End/>
+                    <br/>
                 <br/>
                          describe('run recorded UI tests', function()<Begin/>
                      <br/>
