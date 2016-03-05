@@ -56,11 +56,15 @@ export default function create(rootReactComponent){
 		  case 'topClick':
 
 				TestUtils.Simulate.click(component);
-
 				state.events.push( { type: action.type, component:action} );
-
 				state = { ...state, clicks:state.clicks+1 };
-				break;
+			break;
+		  case 'topChange':
+		  	component.value = action.value;
+				TestUtils.Simulate.change(component);
+				state.events.push( { type: action.type, component:action} );
+				state = { ...state, clicks:state.clicks+1 };
+			break;			
 		}
 		
 		return state;
