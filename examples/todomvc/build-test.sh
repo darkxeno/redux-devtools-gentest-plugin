@@ -1,3 +1,3 @@
 babel tests --out-dir dist
-webpack dist/test4.js
+webpack dist/test5.js
 

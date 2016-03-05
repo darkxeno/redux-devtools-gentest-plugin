@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
-import {Content, TestMonitor} from '../../../src';
 import TodoApp from './TodoApp';
-import { createStore, combineReducers, compose } from 'redux';
-import { devTools, persistState } from 'redux-devtools';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { Provider } from 'react-redux';
-import * as reducers from '../reducers';
-
-const finalCreateStore = compose(
-  devTools(),
-  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
-  createStore
-);
-
-const reducer = combineReducers(reducers);
-const store = finalCreateStore(reducer);
+import { store } from '../redux-setup'; 
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+import { TestMonitor } from 'redux-devtools-gentest-plugin';
 
 export default class App extends Component {
   render() {
@@ -25,11 +14,7 @@ export default class App extends Component {
         </Provider>
         <DebugPanel top right bottom>
           <DevTools store={store}
-                    monitor={LogMonitor} />
-        </DebugPanel>
-        <DebugPanel top left bottom>
-          <DevTools store={store}
-                    monitor={TestMonitor}/>
+                    monitor={TestMonitor} />
         </DebugPanel>
       </div>
     );

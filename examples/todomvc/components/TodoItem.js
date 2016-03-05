@@ -43,14 +43,15 @@ export default class TodoItem extends Component {
     } else {
       element = (
         <div className='view'>
-          <input className='toggle'
+          <input id={'todo'+todo.id}
+                 className='toggle'
                  type='checkbox'
                  checked={todo.marked}
                  onChange={() => markTodo(todo.id)} />
           <label onDoubleClick={::this.handleDoubleClick}>
             {todo.text}
           </label>
-          <button className='destroy'
+          <button className='destroy' id='destroyButton'
                   onClick={() => deleteTodo(todo.id)} />
         </div>
       );

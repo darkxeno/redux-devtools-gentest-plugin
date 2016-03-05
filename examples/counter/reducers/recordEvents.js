@@ -1,4 +1,6 @@
 
+injectTapEventPlugin();
+
 export default function testEvents(state={ clicks:0, others:0, events:[] }, action) {
   console.log('recording event received:',action);
 

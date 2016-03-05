@@ -12,15 +12,17 @@ export default class Counter extends Component {
     const { increment, incrementIfOdd, decrement, counter, incrementAsync } = this.props;
     return (
       <p>
+        <input type="text" className="text" id="textField1" />
         Clicked: {counter} times
         {' '}
-        <button onClick={increment}>+</button>
+        <button id="increment" className="button" onClick={increment}>+</button>
         {' '}
-        <button onClick={decrement}>-</button>
+        <button id="decrement" className="button" onClick={decrement}>-</button>
         {' '}
-        <button onClick={incrementIfOdd}>Increment if odd</button>
+        <button id="incrementIfOdd" className="button" onClick={incrementIfOdd}>Increment if odd</button>
         {' '}
-        <button onClick={incrementAsync}>Increment Async</button>
+        <button id="incrementAsync" className="button" onClick={incrementAsync}>Increment Async</button>
+        <input type="text" className="text" id="textField" />
       </p>
     );
   }

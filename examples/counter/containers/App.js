@@ -12,11 +12,10 @@ export default class App extends Component {
         <Provider store={store}>
           {() => <CounterApp />}
         </Provider>
-        {(!window.__TEST_MODE)?
         <DebugPanel top right bottom>
           <DevTools store={store}
                     monitor={TestMonitor} />
-        </DebugPanel>:null}
+        </DebugPanel>
       </div>
     );
   }

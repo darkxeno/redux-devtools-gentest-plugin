@@ -4,6 +4,7 @@ import { Connector } from 'react-redux';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import * as TodoActions from '../actions/TodoActions';
+import { TestActions } from 'redux-devtools-gentest-plugin';
 
 export default class TodoApp extends Component {
   render() {
@@ -15,6 +16,10 @@ export default class TodoApp extends Component {
   }
 
   renderChild({ todos, dispatch }) {
+
+    if(!window.TestActions){
+      window.TestActions = {...bindActionCreators(TestActions, dispatch)};
+    }
     const actions = bindActionCreators(TodoActions, dispatch);
     return (
       <div>
