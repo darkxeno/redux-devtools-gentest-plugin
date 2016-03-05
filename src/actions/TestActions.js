@@ -27,6 +27,7 @@ export function event(topLevelType, topLevelTarget, reactId, nativeEvent) {
       reactId,
       targetId,
       tagName: topLevelTarget.tagName,
+      className: topLevelTarget.className,
       previousValue: topLevelTarget.getAttribute('value'),
       value: nativeEvent.target.value,
       offsetMillis

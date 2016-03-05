@@ -5,7 +5,14 @@ let rootComponent;
 
 function getTargetReactComponent(action) {
 
-	const components = TestUtils.scryRenderedDOMComponentsWithTag(rootComponent, action.tagName);
+	let components;
+
+	if(action.className) {
+		components = TestUtils.scryRenderedDOMComponentsWithClass(rootComponent, action.className);
+	} else {
+		components = TestUtils.scryRenderedDOMComponentsWithTag(rootComponent, action.tagName);
+	}
+
 	//const reactId = action.reactId.replace(/^\.[0-Z]*\.(.*)$/, mainId+'.$1');
 	const { reactId, targetId } = action;
 
@@ -45,7 +52,7 @@ export default function create(rootReactComponent){
 
   return function playEvents(state={ clicks:0, changes:0, others:0, events:[] }, action) {
 
-  	if(!action.tagName){
+  	if(!action.tagName && !action.className){
   		return state;
   	}
 
@@ -54,7 +61,8 @@ export default function create(rootReactComponent){
 	  const component = getTargetReactComponent(action);
 
 	  if(!component){
-	  	throw new Error('Target react component not found',action);
+	  	console.error('Target react component not found',action);
+	  	throw new Error('Target react component not found, missing id attribute?');
 	  }
 
 	  switch (action.type) {
