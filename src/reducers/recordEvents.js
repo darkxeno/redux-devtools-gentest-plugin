@@ -1,13 +1,17 @@
 
+//import injectTapEventPlugin from '../events/injectTapEventPlugin'
+
+//injectTapEventPlugin();
+
 export default function recordEvents(state={ clicks:0, others:0, events:[] }, action) {
-  console.log('recording event received:',action);
+  console.log('received event received:',action);
 
   switch (action.type) {
 	  case '@@INIT':
 	  	
 	  	break;
-	  case 'click':
-		
+	  case 'topClick':
+			console.log('recording event received:',action);
 			state = { ...state, clicks:state.clicks+1, events: [...state.events,{ type: action.type, component:action }] };
 			break;
 	  /*default:
