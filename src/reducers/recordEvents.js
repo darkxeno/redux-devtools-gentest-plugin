@@ -1,7 +1,7 @@
 
-//import injectTapEventPlugin from '../events/injectTapEventPlugin'
+import injectTapEventPlugin from '../events/injectTapEventPlugin'
 
-//injectTapEventPlugin();
+injectTapEventPlugin();
 
 export default function recordEvents(state={ clicks:0, changes: 0, others:0, events:[] }, action) {
   console.log('received event received:',action);
@@ -17,12 +17,7 @@ export default function recordEvents(state={ clicks:0, changes: 0, others:0, eve
 	  case 'topChange':
 			console.log('recording event received:',action);
 			state = { ...state, changes:state.changes+1, events: [...state.events,{ type: action.type, component:action }] };
-			break;			
-	  /*default:
-	  	const event = { type: action.type, offsetMillis: Date.now()-initTimestamp }
-	  	state.events.push( event );
-	  	state = { ...state, others:state.others+1 };
-	  	break;*/
+			break;
   }
 
   return state;
