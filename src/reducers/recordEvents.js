@@ -9,17 +9,29 @@ export default function recordEvents(state={ clicks:0, changes: 0, others:0, eve
   switch (action.type) {
 	  case '@@INIT':
 	  	
-	  	break;
-	  case 'topClick':			
-			state = { ...state, clicks:state.clicks+1, events: [...state.events,{ type: action.type, component:action }] };
+	  	break;  	
+	  case 'topClick':
+	  case 'topDoubleClick':			
+			state = { 
+				...state, clicks:state.clicks+1, 
+				//events: [...state.events,{ type: action.type, component:action }] 
+			};
 			break;
 	  case 'topChange':
 	  case 'topInput':			
-			state = { ...state, changes:state.changes+1, events: [...state.events,{ type: action.type, component:action }] };
+			state = { 
+				...state, changes:state.changes+1, 
+				//events: [...state.events,{ type: action.type, component:action }] 
+			};
 			break;
 	  case 'topKeyDown':
-	  case 'topKeyUp':			
-			state = { ...state, others:state.others+1, events: [...state.events,{ type: action.type, component:action }] };
+	  case 'topKeyUp':
+	  case 'topFocus':	  			
+			state = { 
+				...state, 
+				others:state.others+1, 
+				//events: [...state.events,{ type: action.type, component:action }] 
+			};
 			break;			
   }
 

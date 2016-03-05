@@ -21,6 +21,8 @@ export function event(topLevelType, topLevelTarget, reactId, nativeEvent) {
     case 'topClick':     
     case 'topChange':
     case 'topInput':
+    case 'topFocus':
+    case 'topDoubleClick':
     return {
       record: true,
       type: topLevelType,

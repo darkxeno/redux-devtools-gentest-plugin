@@ -16,7 +16,7 @@ function getTargetReactComponent(action) {
 	//const reactId = action.reactId.replace(/^\.[0-Z]*\.(.*)$/, mainId+'.$1');
 	const { reactId, targetId } = action;
 
-	console.log('Found [',action.tagName,'] components:',components.length,' looking for:',reactId);
+	//console.log('Found [',action.tagName,'] components:',components.length,' looking for:',reactId);
 		
 	//const app = TestUtils.scryRenderedComponentWithType(App);
 	const component = components.filter((component)=>{
@@ -28,12 +28,12 @@ function getTargetReactComponent(action) {
 		}
 	}).pop();
 
-	console.log('Found component: [',action.tagName,reactId,']');
+	//console.log('Found component: [',action.tagName,reactId,']');
 	const isDOMComponent = TestUtils.isDOMComponent(component);
 
-	if(isDOMComponent){
-		console.log('Found component: ',component.getDOMNode().outerHTML);	
-	}
+	//if(isDOMComponent){
+	//	console.log('Found component: ',component.getDOMNode().outerHTML);	
+	//}
 
 	return component;
 }
@@ -53,7 +53,7 @@ export default function create(rootReactComponent){
   		return state;
   	}
 
-  	console.log('playing event recorded:',action);  
+  	//console.log('playing event recorded:',action);  
 
 	  const component = getTargetReactComponent(action);
 
@@ -65,26 +65,45 @@ export default function create(rootReactComponent){
 	  const node = component.getDOMNode();
 
 	  switch (action.type) {
+		  case 'topDoubleClick':
+				TestUtils.Simulate.doubleClick(component);
+				//state.events.push( { type: action.type, component:action} );
+				state = { ...state, clicks:state.clicks+1 };
+			break;	  	
 		  case 'topClick':
-
-				TestUtils.Simulate.click(component);
-				state.events.push( { type: action.type, component:action} );
+		  	if(node.tagName === 'INPUT' && node.type === 'checkbox'){
+		  		node.value = action.value;
+					TestUtils.Simulate.change(component);
+				} else {
+					TestUtils.Simulate.click(component);
+				}
+				//state.events.push( { type: action.type, component:action} );
 				state = { ...state, clicks:state.clicks+1 };
 			break;
+		  case 'topFocus':
+
+				TestUtils.Simulate.focus(component);
+				//state.events.push( { type: action.type, component:action} );
+				state = { ...state, others:state.others+1 };
+			break;			
 		  case 'topChange':
 			case 'topInput':{
 				const eventName = action.type === 'topChange' ? 'change' : 'input';		  	
-		  	node.value = action.value;
-				TestUtils.Simulate.change(node);
-				state.events.push( { type: action.type, component:action} );
-				state = { ...state, changes:state.changes+1 };
+		  	
+		  	if(eventName!=='change' || node.tagName !== 'INPUT' && node.type !== 'checkbox'){
+		  		node.value = action.value;
+					TestUtils.Simulate.change(node);
+					state = { ...state, changes:state.changes+1 };
+				}
+				//state.events.push( { type: action.type, component:action} );
+				
 			}
 			break;	
 			case 'topKeyDown':
 		  case 'topKeyUp':{
 		  	const eventName = action.type === 'topKeyDown' ? 'keyDown' : 'keyUp';
 				TestUtils.Simulate[eventName](node, action.eventData);
-				state.events.push( { type: action.type, component:action} );
+				//state.events.push( { type: action.type, component:action} );
 				state = { ...state, others:state.others+1 };
 			}
 			break;					
