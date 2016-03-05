@@ -22,17 +22,14 @@ function getTargetReactComponent(action) {
 	const component = components.filter((component)=>{
 		
 		if(targetId){
-			console.log('component Rid',component.getDOMNode().getAttribute('id'));
 			return component.getDOMNode().getAttribute('id')===targetId;
 		} else {
-			console.log('component Rid',component.getDOMNode().getAttribute('data-reactid'));
 			return component.getDOMNode().getAttribute('data-reactid')===reactId;	
 		}
 	}).pop();
 
 	console.log('Found component: [',action.tagName,reactId,']');
 	const isDOMComponent = TestUtils.isDOMComponent(component);
-	console.log('isDOMComponent:',isDOMComponent);
 
 	if(isDOMComponent){
 		console.log('Found component: ',component.getDOMNode().outerHTML);	
@@ -65,6 +62,8 @@ export default function create(rootReactComponent){
 	  	throw new Error('Target react component not found, missing id attribute?');
 	  }
 
+	  const node = component.getDOMNode();
+
 	  switch (action.type) {
 		  case 'topClick':
 
@@ -73,12 +72,22 @@ export default function create(rootReactComponent){
 				state = { ...state, clicks:state.clicks+1 };
 			break;
 		  case 'topChange':
-		  	const node = component.getDOMNode();
+			case 'topInput':{
+				const eventName = action.type === 'topChange' ? 'change' : 'input';		  	
 		  	node.value = action.value;
 				TestUtils.Simulate.change(node);
 				state.events.push( { type: action.type, component:action} );
 				state = { ...state, changes:state.changes+1 };
-			break;			
+			}
+			break;	
+			case 'topKeyDown':
+		  case 'topKeyUp':{
+		  	const eventName = action.type === 'topKeyDown' ? 'keyDown' : 'keyUp';
+				TestUtils.Simulate[eventName](node, action.eventData);
+				state.events.push( { type: action.type, component:action} );
+				state = { ...state, others:state.others+1 };
+			}
+			break;					
 		}
 		
 		return state;
