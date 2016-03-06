@@ -47,7 +47,7 @@ export default function create(rootReactComponent){
 
 	rootComponent = rootReactComponent;
 
-  return function playEvents(state={ clicks:0, changes:0, others:0, events:[] }, action) {
+  return function playEvents(state={ clicks:0, changes:0, others:0 }, action) {
 
   	if(!action.tagName && !action.className){
   		return state;

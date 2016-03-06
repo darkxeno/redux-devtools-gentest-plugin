@@ -3,7 +3,7 @@ import injectTapEventPlugin from '../events/injectTapEventPlugin'
 
 injectTapEventPlugin();
 
-export default function recordEvents(state={ clicks:0, changes: 0, others:0, events:[] }, action) {
+export default function recordEvents(state={ clicks:0, changes: 0, others:0 }, action) {
   //console.log('received event received:',action);
 
   switch (action.type) {

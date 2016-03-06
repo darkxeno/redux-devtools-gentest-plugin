@@ -9,27 +9,42 @@ export class Expect extends PureComponent {
         var stateNextId = <span>{JSON.stringify(this.props.nextState)}</span>;
         var stateId = <span>{JSON.stringify(this.props.curState)}</span>;
         var action = <span>{JSON.stringify(this.props.action)}</span>;
+        if( this.props.action.async ){
         return (
-            <span>
-                    const curState = {stateId};
-                    <br/>
-                    const action = {action};
-                    <br/>
-                    const nextState = {stateNextId};
-                    <br/>
-                    expect(store.getState()).to.deep.equal(curState);
-                    <br/>
-                    store.dispatch(action);
-                    <br/>
-                    expect(store.getState()).to.deep.equal(nextState);
-                    <br/>                   	
-                    waitForStoreChanges(done);
-                    <br/>                    	
-                    dispatchTestAction(action);
-                    <br/>
+              <span>                     
+                  waitForStoreChanges(done);
+                  <br/>                     
                 <br/>
-            </span>
-        );
+              </span>
+          );
+        } else {
+         
+          return (
+              <span>
+                      const curState = {stateId};
+                      <br/>
+                      const action = {action};
+                      <br/>
+                      const nextState = {stateNextId};
+                      <br/>
+                      const realCurState = store.getState();
+                      <br/>
+                      store.dispatch(action);
+                      <br/>
+                      const realNextState = store.getState();
+                      <br/>
+                      dispatchTestAction(action);
+                      <br/>
+                      expect(realCurState).to.deep.equal(curState);
+                      <br/>
+                      expect(realNextState).to.deep.equal(nextState);                      
+                      <br/>                      
+                      conditionalWait(done);
+                      <br/>
+                  <br/>
+              </span>
+          );
+      }
     }
 }
 
@@ -59,8 +74,15 @@ export class Describe extends PureComponent {
     }
 
     render() {
+        let hasAsyncAction = false;
+        const its = R.map((item)=>{
+           if( item.action.async ){
+             hasAsyncAction = true;
+           }
+           return (<span><It {...item}/><br/><br/></span>);
+         }
+        ,R.filter((item)=>item && item.action && item.action.record || item.action.async)(this.props.items));
 
-        const its = R.map((item)=> <span><It {...item}/><br/><br/></span>,R.filter((item)=>item && item.action && item.action.record)(this.props.items));
         return (
 
             <span>
@@ -83,6 +105,9 @@ export class Describe extends PureComponent {
                 <br/>                   
                    const simulateRealTime = false;
                 <br/>
+                   const useAsyncWait = { hasAsyncAction?'true':'false' };
+                <br/>
+                <br/>   
                    let expect = chai.expect;
                 <br/>
                    let playEvents = Reducers.playEvents.create(rootComponent);
@@ -90,6 +115,7 @@ export class Describe extends PureComponent {
                    let testReducer = combineReducers(<Begin/> playEvents <End/>);
                 <br/>
                    let testStore = createStore(testReducer);
+                <br/>
                 <br/>
                     const waitForStoreChanges = function(done)<Begin/>
                     <br/>    
@@ -110,8 +136,22 @@ export class Describe extends PureComponent {
                             done();
                     <br/>        
                         <End/>); 
+                    <br/>
+                    <End/>
+                    <br/> 
+                    const conditionalWait = function(done, waitTime)<Begin/>
                     <br/>    
-                    }
+                        if(useAsyncWait)<Begin/>
+                    <br/>             
+                          done();     
+                    <br/>        
+                        <End/> else <Begin/>
+                    <br/>
+                          waitForStoreChanges(done, waitTime);
+                    <br/>    
+                        <End/>
+                    <br/>
+                    <End/>
                     <br/>
                     const dispatchTestAction = function(action)<Begin/>
                     <br/>    
